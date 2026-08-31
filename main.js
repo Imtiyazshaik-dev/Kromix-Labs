@@ -4,6 +4,21 @@ const siteNav = document.getElementById('siteNav');
 const heroSection = document.getElementById('top');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Lock hero height to the real, current viewport height in px.
+// Prevents leftover whitespace on mobile where the address bar
+// shows/hides and changes what 1vh actually means mid-scroll.
+function setHeroHeight(){
+  const vh = window.innerHeight;
+  heroSection.style.height = (vh * 2.2) + 'px';
+}
+setHeroHeight();
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(setHeroHeight, 150);
+});
+window.addEventListener('orientationchange', setHeroHeight);
+
 function onScroll(){
   const heroHeight = heroSection.offsetHeight;
   const viewportH = window.innerHeight;

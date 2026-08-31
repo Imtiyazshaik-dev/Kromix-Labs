@@ -90,6 +90,7 @@ p{max-width:56ch;}
   position:sticky;
   top:0;
   height:100vh;
+  height:100dvh;
   display:flex;
   flex-direction:column;
   align-items:center;
