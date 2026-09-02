@@ -61,6 +61,44 @@ window.addEventListener('scroll', () => {
 
 onScroll();
 
+// ---- Contact form submission (Formspree) ----
+const contactForm = document.getElementById('contactForm');
+if(contactForm){
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = contactForm.querySelector('.btn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Sending…';
+    btn.style.pointerEvents = 'none';
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        btn.textContent = 'Sent — Thank You';
+        contactForm.reset();
+      } else {
+        btn.textContent = 'Something went wrong — try again';
+        btn.style.pointerEvents = 'auto';
+      }
+    } catch (err) {
+      btn.textContent = 'Something went wrong — try again';
+      btn.style.pointerEvents = 'auto';
+    }
+
+    setTimeout(() => {
+      if (btn.textContent !== originalText) {
+        btn.textContent = originalText;
+        btn.style.pointerEvents = 'auto';
+      }
+    }, 5000);
+  });
+}
+
 // ---- Fast scroll-to-section for nav links ----
 function fastScrollTo(targetY, duration){
   const startY = window.scrollY;
